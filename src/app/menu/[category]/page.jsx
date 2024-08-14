@@ -18,7 +18,7 @@ const getData = async (category) => {
 };
 
 const CategoryPage = async ({ params }) => {
-    const { category } = params;  // Access dynamic route parameter
+    const { category } = params; 
 
     const data = await getData(category);
 
