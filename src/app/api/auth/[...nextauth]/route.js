@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import PostgresAdapter from "@auth/pg-adapter"
 import { Pool } from "pg"
@@ -15,15 +15,26 @@ const pool = new Pool({
 
 export const authOptions = {
     adapter: PostgresAdapter(pool), 
+    session: {
+        strategy: "jwt"
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_ID,
             clientSecret: process.env.GOOGLE_SECRET,
           }),
-    ]
+    ],
+    callbacks: {
+        async session({token, session}) {
+            return { ...token, ...session };
+        },
+        async jwt({ token, user }) {
+            return { ...token, ...user }; 
+        }
+    }
 }
 
-// export const getAuthSession = () => getServerSession(authOptions)
+export const getAuthSession = () => getServerSession(authOptions)
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST};
