@@ -15,7 +15,7 @@ export const GET = async () => {
 
     let url = "http://localhost:9090/api/orders";
 
-    if (session.is_admin) {
+    if (!session.is_admin) {
       url += `?userEmail=${encodeURIComponent(session.user.email)}`;
     }
 
