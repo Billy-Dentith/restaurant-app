@@ -1,12 +1,13 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const OrdersPage = () => {
-    const { status } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
 
     if (status === "unauthenticated") {
@@ -27,6 +28,31 @@ const OrdersPage = () => {
         enabled: status === "authenticated"
     })
 
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn:({ id, status }) => {
+            return fetch(`http://localhost:3000/api/orders/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ status })
+            })
+        },
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ["orders"] })
+        }
+    })
+    
+    const handleUpdate = (e, id) => {        
+        e.preventDefault();
+        
+        const status = e.target[0].value;
+
+        mutation.mutate({ id, status })
+    }
+    
     if (isLoading || status === "loading") return "Loading..."
 
     return (
@@ -49,7 +75,20 @@ const OrdersPage = () => {
                             <td className="py-6 px-1">22/07/2024</td>
                             <td className="py-6 px-1">{item.price}</td>
                             <td className="hidden md:block py-6 px-1">{item.products.quantity}</td>
-                                <td className="py-6 px-1">{item.status}</td>
+                            {session.is_admin ? (
+                                    <td>
+                                        <form className="flex items-center justify-center gap-4" onSubmit={(e) => handleUpdate(e, item.id)}>
+                                            <input placeholder={item.status} className="p-2 ring-1 ring-red-100 rounded-md"/>
+                                            <button className="bg-red-400 p-2 rounded-full">
+                                                <Image src="/edit.png" alt="" width={20} height={20} 
+                                                />
+                                            </button>
+                                        </form>
+                                    </td>
+                                ) : (
+                                    <td className="py-6 px-1">{item.status}</td>
+                                )}
+                                {/* <td className="py-6 px-1">{item.status}</td> */}
                         </tr>
                         )
                     })}
