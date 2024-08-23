@@ -43,9 +43,7 @@ const SingleProduct = async ({ params }) => {
         <h1 className="text-3xl font-bold uppercase xl:text-5xl">{productData.product.title}</h1>
         <p>{productData.product.description}</p>
         <Price
-          price={productData.product.price}
-          id={productData.product.id}
-          options={productData.product.options}
+          product={productData.product}
         />
       </div>
     </div>
