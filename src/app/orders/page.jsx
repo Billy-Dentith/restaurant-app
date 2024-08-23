@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "react-toastify";
 
 const OrdersPage = () => {
     const { data: session, status } = useSession();
@@ -51,6 +52,7 @@ const OrdersPage = () => {
         const status = e.target[0].value;
 
         mutation.mutate({ id, status })
+        toast.success('The order status has been changed!')
     }
     
     if (isLoading || status === "loading") return "Loading..."
@@ -70,10 +72,10 @@ const OrdersPage = () => {
                 <tbody>
                     {data.orders.map((item) => {
                         return (
-                        <tr className="text-sm md:text-base bg-red-100" key={item.id}>
+                        <tr className={`${item.status !== "completed" && "bg-red-100"}`} key={item.id}>
                             <td className="hidden md:block py-6 px-1">{item.id}</td>
                             <td className="py-6 px-1">22/07/2024</td>
-                            <td className="py-6 px-1">{item.price}</td>
+                            <td className="py-6 px-1">£{item.price}</td>
                             <td className="hidden md:block py-6 px-1">{item.products.quantity}</td>
                             {session.is_admin ? (
                                     <td>
