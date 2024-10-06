@@ -14,7 +14,7 @@ export const useCartStore = create(persist((set, get) => ({
     addToCart(item) {
         const products = get().products 
         
-        let productInState = products.find((product) =>        
+        const productInState = products.find((product) =>        
             product.id === item.id && product.optionTitle === item.optionTitle
         )       
 
