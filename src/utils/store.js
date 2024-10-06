@@ -13,14 +13,21 @@ export const useCartStore = create(persist((set, get) => ({
     totalPrice: INITIAL_STATE.totalPrice,
     addToCart(item) {
         const products = get().products 
-        const productInState = products.find((product) => product.id === item.id)
+        
+        let productInState = products.find((product) =>        
+            product.id === item.id && product.optionTitle === item.optionTitle
+        )       
 
-        if (productInState) {
-            const updatedProducts = products.map((product) => product.id === productInState.id ? {
-                ...item,
-                quantity: item.quantity + product.quantity,
-                price: item.price + product.price,
-            } : item)
+        if (productInState) {                        
+            const updatedProducts = products.map((product) => 
+                product.id === productInState.id && product.optionTitle === productInState.optionTitle
+                ? {
+                    ...product,
+                    quantity: product.quantity + item.quantity,
+                    price: product.price + item.price,
+                } 
+                : product
+            );
             set((state) => ({
                 products: updatedProducts,
                 totalItems: state.totalItems + item.quantity, 
@@ -34,11 +41,22 @@ export const useCartStore = create(persist((set, get) => ({
             }))
         }
     },
+
     removeFromCart(item) {
+        const products = get().products;
+
+        const productInState = products.find((product) => 
+            product.id === item.id && product.optionTitle === item.optionTitle
+        );
+
+        if (!productInState) return;
+
         set((state) => ({
-            products: state.products.filter((product) => product.id !== item.id),
+            products: state.products.filter((product) => 
+                !(product.id === item.id && product.optionTitle === item.optionTitle)
+            ),
             totalItems: state.totalItems - item.quantity, 
-            totalPrice: state.totalPrice - item.price
-        }))
+            totalPrice: state.totalPrice - item.price,
+        }));
     }
 }), {name: "cart"}))
