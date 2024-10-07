@@ -25,10 +25,16 @@ export const authOptions = {
           }),
     ],
     callbacks: {
-        async session({token, session}) {
+        async session({token, session, user}) {
+            if (user) {                
+                session.is_admin = user.is_admin;
+            }
             return { ...token, ...session };
         },
         async jwt({ token, user }) {
+            if (user) {
+                token.is_admin = user.is_admin;
+            }
             return { ...token, ...user }; 
         }
     }

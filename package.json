@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/pg-adapter": "^1.4.2",
+    "@auth/pg-adapter": "^1.6.0",
     "@tanstack/react-query": "^5.52.0",
     "dotenv": "^16.4.5",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
-    "pg": "^8.12.0",
+    "pg": "^8.13.0",
     "react": "^18",
     "react-countdown": "^2.3.5",
     "react-dom": "^18",
