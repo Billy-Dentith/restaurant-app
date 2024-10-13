@@ -8,8 +8,6 @@ const DeleteButton = ({ id }) => {
   const { data:session, status } = useSession(); 
   const router = useRouter();
 
-  console.log("session ", session);    
-
   if (status === "loading") {
     return <p>Loading...</p>
   }

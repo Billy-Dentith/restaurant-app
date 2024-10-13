@@ -1,7 +1,5 @@
 import DeleteButton from "@/components/DeleteButton";
 import { Price } from "@/components/Price";
-import { singleProduct } from "@/data";
-// import { singleProduct } from "@/data";
 import Image from "next/image";
 import React from "react";
 
@@ -48,7 +46,7 @@ const SingleProduct = async ({ params }) => {
           product={productData.product}
         />
       </div>
-      <DeleteButton id={singleProduct.id}/>
+      <DeleteButton id={id}/>
     </div>
   );
 };
