@@ -2,11 +2,9 @@
 
 import Image from "next/image"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 
 const DeleteButton = ({ id }) => {
   const { data:session, status } = useSession(); 
-  const router = useRouter();
 
   if (status === "loading") {
     return <p>Loading...</p>
@@ -22,11 +20,10 @@ const DeleteButton = ({ id }) => {
     })
 
     if (res.status === 200) {
-      router.push("/menu");
+      window.location.href = "/menu";
     } else {
       const data = await res.json();
       console.log(data.message);
-      
     }
   }
 
