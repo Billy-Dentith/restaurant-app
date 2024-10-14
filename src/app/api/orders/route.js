@@ -35,12 +35,51 @@ export const GET = async () => {
 
     const orders = await response.json();
     return new NextResponse(JSON.stringify(orders), { status: 200 });
-    
   } catch (err) {
     console.error("Fetch error:", err.message);
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong!" }),
       { status: 500 }
     );
+  }
+};
+
+// CREATE ORDER
+export const POST = async (req) => {
+  const session = await getAuthSession();
+
+  if (session) {
+    try {
+      const body = await req.json();           
+
+      const response = await fetch("http://localhost:9090/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        console.error(
+          `Error: Failed to create order. Status: ${response.status}`
+        );
+        throw new Error("Failed to create order");
+      }
+
+      const order = await response.json();
+      return new NextResponse(JSON.stringify(order), { status: 201 });
+
+    } catch (err) {
+      console.error("Create error:", err.message);
+      return new NextResponse(
+        JSON.stringify({ message: "Something went wrong!" }),
+        { status: 500 }
+      );
+    }
+  } else {
+    return new NextResponse(JSON.stringify({ message: "Not Authenticated!" }), {
+      status: 401,
+    });
   }
 };
