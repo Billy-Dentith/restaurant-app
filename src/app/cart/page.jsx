@@ -2,12 +2,16 @@
 
 import { formatPrice } from "@/utils/formatPrice";
 import { useCartStore } from "@/utils/store";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 const CartPage = () => {
   const containerRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter(); 
 
   useEffect(() => {
     const container = containerRef.current;
@@ -17,6 +21,33 @@ const CartPage = () => {
   }, []);
 
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore(); 
+
+  const handleCheckout = async () => {
+    if (!session) {
+      router.push("/login");
+    } else {
+      try {
+        const response = await fetch("http://localhost:3000/api/orders", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({
+            price: totalPrice,
+            products,
+            status: "Not Paid!",
+            userEmail: session.email,
+          })
+        });        
+
+        const data = await response.json();         
+
+        if (data !== undefined) {
+          router.push(`/pay/${data.order.id}`)
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }  
 
   return (
     <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-red-500 lg:flex-row">
@@ -56,7 +87,7 @@ const CartPage = () => {
           <span className="font-bold">Total</span>
           <span className="font-bold">{formatPrice(totalPrice)}</span>
         </div>
-        <button className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center">
+        <button className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center" onClick={handleCheckout}>
           Checkout
         </button>
       </div>

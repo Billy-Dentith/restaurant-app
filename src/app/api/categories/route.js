@@ -14,8 +14,6 @@ export const GET = async () => {
             console.error(`Error: Failed to fetch categories. Status: ${response.status}`);
             throw new Error('Failed to fetch categories');
         }
-
-        console.log(response)
         
         const categories = await response.json();
 
