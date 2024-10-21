@@ -31,7 +31,7 @@ const SuccessContent = () => {
       makeRequest(); 
     }
 
-  }, [payment_intent])
+  }, [payment_intent, router])
 
   return (
     <div>

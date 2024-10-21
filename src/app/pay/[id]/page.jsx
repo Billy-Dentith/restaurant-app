@@ -41,7 +41,7 @@ const PayPage = ({ params }) => {
   return (
     <div>
       {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
+        <Elements options={options} stripe={stripePromise} key={clientSecret}>
           <CheckoutForm />
         </Elements>
       )}

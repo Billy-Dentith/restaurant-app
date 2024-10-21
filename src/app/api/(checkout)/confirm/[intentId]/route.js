@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const PATCH = async ({ params }) => {
+export const PATCH = async (req, { params }) => {
     const { intentId } = params;
 
     try {
@@ -11,6 +11,14 @@ export const PATCH = async ({ params }) => {
             },
             body: JSON.stringify({ status: "Being prepared!" }),
         })
+    
+        if (!response.ok) {
+            console.error(
+              `Error: Failed to update order status. Status: ${response.status}`
+            );
+            throw new Error("Failed to update order status");
+          }
+
         return new NextResponse(
             JSON.stringify({ message: "Order has been updated!"}), 
             { status: 200 }
