@@ -25,8 +25,8 @@ const AddPage = () => {
     return <p>Loading...</p>;
   }
 
-  if (status === "unauthenticated" || !session?.isAdmin) {
-    // router.push("/");
+  if (status === "unauthenticated" || !session.is_admin) {
+    router.push("/");
   }
 
   const handleChange = (e) => {
@@ -77,10 +77,8 @@ const AddPage = () => {
       });
 
       const data = await response.json();
-      console.log(data);
-      
 
-      // router.push(`/products/${data.id}`);
+      router.push(`/products/${data.product.id}`);
     } catch (err) {
       console.log(err);
     }
