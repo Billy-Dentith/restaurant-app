@@ -36,3 +36,36 @@ export const GET = async (req) => {
     );
   }
 };
+
+// POST PRODUCT
+export const POST = async (req) => {
+  try {   
+    const body = await req.json();
+    console.log("body in route: ", body);
+    
+
+    const response = await fetch(`http://localhost:9090/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: Failed to add product. Status: ${response.status}`);
+      throw new Error("Failed to add products");
+    }
+
+    const product = await response.json();
+    
+    return new NextResponse(JSON.stringify(product), { status: 201 });
+
+  } catch (err) {
+    console.error('Post error:', err.message);
+    return new NextResponse(
+      JSON.stringify({ message: "Something went wrong!" }),
+      { status: 500 }
+    );
+  }
+};
