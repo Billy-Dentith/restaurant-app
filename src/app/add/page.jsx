@@ -30,15 +30,19 @@ const AddPage = () => {
   }
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setInputs((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
+      return { ...prev, [name]: name === "price" ? Number(value) : value };
     });
   };
 
   const handleOptionChange = (e) => {    
+    const { name, value } = e.target;
+
     setOption((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
+      return { ...prev, [name]: name === "additionalPrice" ? Number(value) : value };
+    });   
   };
 
   const handleImageChange = (e) => {
@@ -67,14 +71,21 @@ const AddPage = () => {
 
     try {
       const url = await uploadImage();
+      const body = {
+        ...inputs,
+        image: url,
+        options,
+      }
+
       const response = await fetch("http://localhost:3000/api/products", {
         method: "POST",
-        body: JSON.stringify({
-          ...inputs,
-          image: url,
-          options,
-        }),
+        body: JSON.stringify(body),
       });
+
+      if (!response.ok) {
+        console.error(`Error: Failed to add product. Status: ${response.status}`);
+        throw new Error("Failed to add products");
+      }
 
       const data = await response.json();
 
@@ -123,7 +134,7 @@ const AddPage = () => {
             className="ring-1 ring-red-200 p-2 rounded-sm"
             type="text"
             name="catSlug"
-            placeholder="pizza"
+            placeholder="pizzas"
             onChange={handleChange}
           />
         </div>
@@ -173,7 +184,7 @@ const AddPage = () => {
                 }
               >
                 <span>{option.title} </span>
-                <span>(+ £{option.additionalPrice})</span>
+                <span>(+ £{option.additionalPrice / 100})</span>
               </div>
             ))}
           </div>
