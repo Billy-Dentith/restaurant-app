@@ -1,5 +1,6 @@
 "use client"
 
+import { formatPrice } from "@/utils/formatPrice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -75,7 +76,7 @@ const OrdersPage = () => {
                         <tr className={`${item.status !== "completed" && "bg-red-100"}`} key={item.id}>
                             <td className="hidden md:block py-6 px-1">{item.id}</td>
                             <td className="py-6 px-1">22/07/2024</td>
-                            <td className="py-6 px-1">£{item.price}</td>
+                            <td className="py-6 px-1">{formatPrice(item.price)}</td>
                             <td className="hidden md:block py-6 px-1">{item.products.quantity}</td>
                             {session.is_admin ? (
                                     <td>
