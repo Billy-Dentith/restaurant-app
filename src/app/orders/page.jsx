@@ -60,8 +60,8 @@ const OrdersPage = () => {
   if (isLoading || status === "loading") return "Loading...";
 
   return (
-    <div className="pt-4 p-2 lg:px-20 xl:px-40">
-      <table className="w-full border-separate border-spacing-2">
+    <div className="pt-4 p-2 lg:px-10 xl:px-40">
+      <table className="w-full border-separate border-spacing-2 text-xs sm:text-base">
         <thead>
           <tr className="text-left">
             <th className="hidden md:block">Order ID</th>
@@ -82,32 +82,51 @@ const OrdersPage = () => {
                 }`}
                 key={item.id}
               >
-                <td className="hidden md:block py-8 px-2">{item.id}</td>
-                <td className="py-6 px-2">
-                  {date.split(" ")[0].split("-").reverse().join("-")}{" "}
+                <td className="hidden md:table-cell py-4 px-2">{item.id}</td>
+                <td className="w-20 md:w-24 py-4 px-2">
+                  {date.split(" ")[0].split("-").reverse().join("/")}{" "}
                   {date.split(" ")[1]}
                 </td>
-                <td className="py-6 px-2">{formatPrice(item.price)}</td>
-                <td className="hidden md:block py-8 px-2">
-                  {item.products.quantity}
+                <td className="py-4 px-2">{formatPrice(item.price)}</td>
+                <td className="hidden md:table-cell py-4 px-2">
+                    <table className="w-full">
+                      <thead className="bg-gray-100">
+                        <tr className="text-left">
+                          <th className="px-2 py-1">Item</th>
+                          <th className="px-2 py-1">Size</th>
+                          <th className="px-2 py-1">Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {item.products.map((product) => (
+                          <tr className="text-left odd:bg-white even:bg-gray-100" key={product.id + product.optionTitle}>
+                            <td className="px-2 py-1">{product.title}</td>
+                            <td className="px-2 py-1">{product.optionTitle}</td>
+                            <td className="px-2 py-1">{product.quantity}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                 </td>
                 {session.is_admin ? (
                   <td>
                     <form
-                      className="flex flex-col md:flex-row items-center justify-center gap-2 px-1"
+                      className="flex flex-col items-center justify-center gap-2 px-1"
                       onSubmit={(e) => handleUpdate(e, item.id)}
                     >
                       <input
                         placeholder={item.status}
-                        className="p-2 ring-1 ring-red-100 rounded-md w-24 md:w-auto"
+                        className="p-2 ring-1 ring-red-100 rounded-md w-28 md:w-36 lg:w-auto"
                       />
-                      <button className="bg-red-400 p-2 rounded-full">
+                      <button className="bg-red-400 p-2 flex flex-row rounded-full">
                         <Image
                           src="/edit.png"
                           alt="edit order"
                           width={20}
                           height={20}
+                          className="w-4 h-4 md:w-5 md:h-5"
                         />
+                        <p className="px-2 text-white">Submit</p>
                       </button>
                     </form>
                   </td>
