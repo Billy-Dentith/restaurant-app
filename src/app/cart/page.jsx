@@ -55,7 +55,7 @@ const CartPage = () => {
       <div ref={containerRef} className={`h-full p-4 flex flex-col overflow-auto flex-grow lg:w-2/3 2xl:w-1/2 lg:px-20 xl:px-40 ${isOverflowing ? "" : "justify-center"}`}>
           {/* SINGLE ITEM */}
           {products.map((item) => (
-            <div className="flex items-center justify-between mb-4" key={item.id}>
+            <div className="flex items-center justify-between mb-4" key={item.id + item.optionTitle}>
               {item.image && (
                 <Image src={item.image} alt="" width={100} height={100} />
               )}
