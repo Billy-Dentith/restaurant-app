@@ -11,7 +11,7 @@ export const UserLinks = () => {
       {status === "authenticated" ? (
         <div>
           <Link href="/orders">Orders</Link>
-          <span className="ml-4 cursor-pointer" onClick={() => signOut()}>Logout</span>
+          <span className="ml-4 cursor-pointer" onClick={() => signOut({ callbackUrl: '/', redirect:true })}>Logout</span>
         </div>
       ) : (
         <Link href="/login">Login</Link>
