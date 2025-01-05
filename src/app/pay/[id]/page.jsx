@@ -1,6 +1,7 @@
 "use client"
 
 import CheckoutForm from "@/components/CheckoutForm";
+import OrderSummary from "@/components/OrderSummary";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
@@ -39,12 +40,19 @@ const PayPage = ({ params }) => {
   };
   
   return (
-    <div>
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise} key={clientSecret}>
-          <CheckoutForm />
-        </Elements>
-      )}
+    <div className="mx-auto w-11/12 m-5 md:m-10">
+      <div className="content-center flex flex-col md:flex-row">
+        <div className="rounded-t-xl md:rounded-none md:rounded-l-xl bg-gray-100 basis-1/2 p-10">
+          <OrderSummary />
+        </div>
+        <div className="rounded-b-xl md:rounded-none md:rounded-r-xl bg-blue-100 basis-1/2 p-10">
+          {clientSecret && (
+            <Elements options={options} stripe={stripePromise} key={clientSecret}>
+              <CheckoutForm />
+            </Elements>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
