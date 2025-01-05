@@ -4,7 +4,7 @@ import React from "react";
 
 export const Featured = () => {
   return (
-    <div className="w-screen overflow-x-scroll text-red-500">
+    <div className="w-100vw overflow-x-scroll text-red-500">
       {/* WRAPPER */}
       <div className="w-max flex">
         {/* SINGLE ITEM */}

@@ -74,18 +74,23 @@ const OrdersPage = () => {
         <tbody>
           {data.orders.map((item) => {
             const date = item.created_at.replace("T", " ").substring(0, 16);
+            const [datePart, time] = date.split(" "); 
+            const [year, month, day] = datePart.split("-");
 
             return (
               <tr
                 className={`${
-                  item.status === "completed" ? "bg-green-100" : "bg-red-100"
+                  item.status === "completed" ? "bg-green-200" : "bg-red-200"
                 }`}
                 key={item.id}
               >
                 <td className="hidden md:table-cell py-4 px-2">{item.id}</td>
-                <td className="w-20 md:w-24 py-4 px-2">
-                  {date.split(" ")[0].split("-").reverse().join("/")}{" "}
-                  {date.split(" ")[1]}
+                <td className="w-16 lg:w-24 py-4 px-2">
+                  {time}
+                  <br/>
+                  {`${day}/${month}`}
+                  <br/>
+                  {year}
                 </td>
                 <td className="py-4 px-2">{formatPrice(item.price)}</td>
                 <td className="hidden md:table-cell py-4 px-2">
@@ -94,7 +99,7 @@ const OrdersPage = () => {
                         <tr className="text-left">
                           <th className="px-2 py-1">Item</th>
                           <th className="px-2 py-1">Size</th>
-                          <th className="px-2 py-1">Quantity</th>
+                          <th className="px-2 py-1">Qty</th>
                         </tr>
                       </thead>
                       <tbody>
