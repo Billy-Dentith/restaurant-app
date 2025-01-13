@@ -1,5 +1,6 @@
 "use client"
 
+import { Slider } from "@/components/Slider";
 import { useRouter, useSearchParams } from "next/navigation"
 import React, { Suspense, useEffect, useState } from "react";
 
@@ -34,8 +35,11 @@ const SuccessContent = () => {
   }, [payment_intent, router])
 
   return (
-    <div>
-      Payment successful. You are being re-directed to the orders page. Please do not close the page.
+    <div className="flex flex-col content-center border-2 border-red-500 rounded-xl m-5 md:m-10 md:mx-auto p-5 md:p-10 w-11/12 md:w-8/12">
+      <p className="mb-10 mt-5 md:mt-0 my-16 font-bold text-2xl text-center text-red-500">
+        Payment successful. You are being re-directed to the orders page. Please do not close the page.
+      </p>
+      <Slider imageOnly={true} />
     </div>
   )
 };
