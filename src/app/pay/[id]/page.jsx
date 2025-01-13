@@ -10,6 +10,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const PayPage = ({ params }) => {
   const [clientSecret, setClientSecret] = useState("");
+  const [currentOrder, setCurrentOrder] = useState({}); 
 
   const { id } = params;    
 
@@ -28,7 +29,23 @@ const PayPage = ({ params }) => {
       }
     }
 
+    const fetchOrder = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
+          method: "GET",
+        })
+        
+        const data = await response.json();
+
+        setCurrentOrder(data.order); 
+        
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     makeRequest();
+    fetchOrder(); 
 
   }, [id]);
 
@@ -43,12 +60,12 @@ const PayPage = ({ params }) => {
     <div className="mx-auto w-11/12 m-5 md:m-10">
       <div className="content-center flex flex-col md:flex-row">
         <div className="rounded-t-xl md:rounded-none md:rounded-l-xl bg-gray-100 basis-1/2 p-10">
-          <OrderSummary />
+          <OrderSummary currentOrder={currentOrder} />
         </div>
         <div className="rounded-b-xl md:rounded-none md:rounded-r-xl bg-blue-100 basis-1/2 p-10">
           {clientSecret && (
             <Elements options={options} stripe={stripePromise} key={clientSecret}>
-              <CheckoutForm />
+              <CheckoutForm orderTotal={currentOrder.price} />
             </Elements>
           )}
         </div>

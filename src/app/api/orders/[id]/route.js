@@ -88,35 +88,33 @@ export const DELETE = async (req, { params }) => {
 }
 
 
-// // GET ORDER 
-// export const GET = async ({ params }) => {
-//     const { id } = params; 
+// GET ORDER BY ID
+export const GET = async (req, { params }) => {
+    const { id } = params; 
 
-//     try {
-//         const response = await fetch(`http://localhost:9090/api/orders/${id}`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//         });
+    try {
+        const response = await fetch(`http://localhost:9090/api/orders/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
 
-//         if (!response.ok) {
-//             console.error(
-//                 `Error: Failed to get order. Status: ${response.status}`
-//               );
-//               throw new Error("Failed to get order");
-//         }
+        if (!response.ok) {
+            console.error(
+                `Error: Failed to get order. Status: ${response.status}`
+              );
+              throw new Error("Failed to get order");
+        }
 
-//         const order = await response.json();
-//         return new NextResponse(JSON.stringify(order), { status: 200 });
+        const order = await response.json();
+        return new NextResponse(JSON.stringify(order), { status: 200 });
 
-//     } catch (err) {
-//         console.log(err);
-        
-//         console.error("Fetch error:", err.message);
-//         return new NextResponse(
-//             JSON.stringify({ message: "Something went wrong!"}),
-//             { status: 500}
-//         );
-//     }
-// }
+    } catch (err) {
+        console.error("Fetch error:", err.message);
+        return new NextResponse(
+            JSON.stringify({ message: "Something went wrong!"}),
+            { status: 500}
+        );
+    }
+}
