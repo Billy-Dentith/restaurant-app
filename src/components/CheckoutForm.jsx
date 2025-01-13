@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/utils/formatPrice";
 import {
   AddressElement,
   PaymentElement,
@@ -8,12 +9,14 @@ import {
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ orderTotal }) => {
   const stripe = useStripe();
   const elements = useElements();
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const totalPrice = formatPrice(orderTotal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +73,7 @@ const CheckoutForm = () => {
             {isLoading ? (
               <div className="spinner" id="spinner"></div>
             ) : (
-              "Pay Now"
+              `Pay Now - ${totalPrice}` 
             )}
           </span>
         </button>
