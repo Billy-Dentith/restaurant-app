@@ -1,6 +1,7 @@
 "use client"
 
 import { Slider } from "@/components/Slider";
+import { useCartStore } from "@/utils/store";
 import { useRouter, useSearchParams } from "next/navigation"
 import React, { Suspense, useEffect, useState } from "react";
 
@@ -8,6 +9,8 @@ const SuccessContent = () => {
   const searchParams = useSearchParams(); 
   const router = useRouter();
   const payment_intent = searchParams.get("payment_intent");
+
+  const { removeAllFromCart } = useCartStore(); 
   
   useEffect(() => {
     if (payment_intent) {
@@ -20,6 +23,8 @@ const SuccessContent = () => {
           if (!response.ok) {
             throw new Error("Failed to update order");
           }
+
+          removeAllFromCart();
 
           setTimeout(() => {
             router.push('/orders')

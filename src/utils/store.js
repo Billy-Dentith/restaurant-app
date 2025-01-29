@@ -58,5 +58,13 @@ export const useCartStore = create(persist((set, get) => ({
             totalItems: state.totalItems - item.quantity, 
             totalPrice: state.totalPrice - item.price,
         }));
+    },
+
+    removeAllFromCart() {
+        set(() => ({
+            products: [],
+            totalItems: 0,
+            totalPrice: 0
+        }))
     }
 }), {name: "cart"}))
