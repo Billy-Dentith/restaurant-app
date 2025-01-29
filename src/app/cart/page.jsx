@@ -4,6 +4,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { useCartStore } from "@/utils/store";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -54,6 +55,13 @@ const CartPage = () => {
       {/* PRODUCTS CONTAINER  */}
       <div ref={containerRef} className={`h-full p-4 flex flex-col overflow-auto flex-grow lg:w-2/3 2xl:w-1/2 lg:px-20 xl:px-40 ${isOverflowing ? "" : "justify-center"}`}>
           {/* SINGLE ITEM */}
+          {products.length === 0 && (
+            <div className="flex flex-col gap-6">
+              <p className="text-xl text-center">Unfortunately, your cart is empty. Click the button below to view our menu...</p>
+            <Link href="/menu" className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center text-center">Menu</Link>
+            </div>
+            
+          )}
           {products.map((item) => (
             <div className="flex items-center justify-between mb-4" key={item.id + item.optionTitle}>
               {item.image && (
