@@ -6,10 +6,6 @@ import { useSession } from "next-auth/react"
 const DeleteButton = ({ id }) => {
   const { data:session, status } = useSession(); 
 
-  if (status === "loading") {
-    return <p>Loading...</p>
-  }
-
   if (status === "unauthenticated" || !session.is_admin) {
     return; 
   }  
