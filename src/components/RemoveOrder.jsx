@@ -15,18 +15,21 @@ const RemoveOrder = ({ id }) => {
   }
 
   const handleRemoval = async (id) => {
-    console.log(id);
-    const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
-      method: "DELETE",
-    });
-
-    if (response.status === 200) {
-        window.location.reload();
-      } else {
-        const data = await response.json();
-        console.log(data.message);
-      }
-  };
+    const result = confirm("Are you sure you want to delete this order?");
+    
+    if (result) {
+      const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (response.status === 200) {
+          window.location.reload();
+        } else {
+          const data = await response.json();
+          console.log(data.message);
+        }
+      };
+    }
 
   return (
     <button
