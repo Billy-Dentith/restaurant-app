@@ -9,6 +9,7 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
     price: product.price,
   });
   const [file, setFile] = useState();
+  const [isFeatured, setIsFeatured] = useState(product.is_featured);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +46,7 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
     try {
       const body = {
         ...inputs,
-        options,
+        is_featured: isFeatured,
       };
 
       if (file) {
@@ -67,7 +68,7 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
 
       const data = await response.json();
 
-      setProductData(data.product); 
+      setProductData(data.product);
 
       setIsEditing(false);
     } catch (err) {
@@ -116,6 +117,29 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
             name="image"
             onChange={handleImageChange}
           />
+        </div>
+        <div className="w-full flex flex-col gap-2">
+          <label>Featured Product</label>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              className={`w-full  ${
+                isFeatured ? "bg-red-500" : "bg-gray-300"
+              } ${isFeatured ? "disabled" : ""} text-white p-2`}
+              onClick={() => setIsFeatured(true)}
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              className={`w-full  ${
+                !isFeatured ? "bg-red-500" : "bg-gray-300"
+              } ${isFeatured ? "disabled" : ""} text-white p-2`}
+              onClick={() => setIsFeatured(false)}
+            >
+              No
+            </button>
+          </div>
         </div>
         <button type="submit" className="w-full bg-red-500 text-white p-2">
           Submit
