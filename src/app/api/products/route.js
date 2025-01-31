@@ -4,21 +4,33 @@ import { NextResponse } from "next/server";
 export const GET = async (req) => {
   try {   
     const url = new URL(req.url);
-    const category = url.searchParams.get('category');        
+    const category = url.searchParams.get('category');    
+    const isFeatured = url.searchParams.get('isFeatured'); 
 
-    if (!category) {
+    if (!category && !isFeatured) {
       return new NextResponse(
         JSON.stringify({ message: 'Category is required' }),
         { status: 400 }
       );
     }
 
-    const response = await fetch(`http://localhost:9090/api/products?category=${category}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (category) {
+      const response = await fetch(`http://localhost:9090/api/products?category=${category}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response; 
+    } else if (isFeatured) {
+      const response = await fetch(`http://localhost:9090/api/products?isFeatured=true`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response; 
+    }
 
     if (!response.ok) {
       console.error(`Error: Failed to fetch products. Status: ${response.status}`);
