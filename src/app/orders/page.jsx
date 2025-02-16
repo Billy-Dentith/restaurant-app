@@ -80,7 +80,7 @@ const OrdersPage = () => {
             return (
               <tr
                 className={`${
-                  item.status === "completed" ? "bg-green-200" : "bg-red-200"
+                  item.status === "Order Complete!" ? "bg-green-200" : "bg-red-200"
                 }`}
                 key={item.id}
               >
@@ -119,10 +119,13 @@ const OrdersPage = () => {
                       className="flex flex-col items-center justify-center gap-2 px-1"
                       onSubmit={(e) => handleUpdate(e, item.id)}
                     >
-                      <input
-                        placeholder={item.status}
-                        className="p-2 ring-1 ring-red-100 rounded-md w-28 md:w-36 lg:w-auto"
-                      />
+                      <select required className="bg-gray-50 border rounded-lg p-2">
+                        <option value="" selected="selected" disabled hidden>{item.status}</option>
+                        <option value="Being Prepared!">Being Prepared!</option>
+                        <option value="On Its Way!">On Its Way!</option>
+                        <option value="Order Complete!">Order Complete!</option>
+                        <option value="Order Cancelled!">Order Cancelled!</option>
+                      </select>
                       <button className="bg-red-400 p-2 flex flex-row rounded-full">
                         <Image
                           src="/edit.png"
