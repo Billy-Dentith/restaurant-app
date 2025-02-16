@@ -2,11 +2,37 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/categories", {
+          cache: "no-store",
+        });
+      
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+      
+        const categoriesData = await response.json();
+        
+        setCategories(categoriesData.categories); 
+
+      } catch (error) {
+        console.error("Failed to fetch categories:", error.message);
+        throw error;
+      }
+    };
+
+    getData(); 
+  }, [])  
 
   const [inputs, setInputs] = useState({
     title: "",
@@ -130,13 +156,21 @@ const AddPage = () => {
         </div>
         <div className="w-full flex flex-col gap-2">
           <label>Category</label>
-          <input
+          {/* <input
             className="ring-1 ring-red-200 p-2 rounded-sm"
             type="text"
             name="catSlug"
             placeholder="pizzas"
             onChange={handleChange}
-          />
+          /> */}
+          <select className="ring-1 ring-red-200 p-2 py-2.5 rounded-sm" name="catSlug" onChange={handleChange}>
+            <option value="" disabled hidden>
+              Select a category...
+            </option>
+            {categories.map((category) => (
+              <option value={category.slug}>{category.title}</option>
+            ))}
+          </select>
         </div>
         <div className="w-full flex flex-col gap-2">
           <label>Image</label>
