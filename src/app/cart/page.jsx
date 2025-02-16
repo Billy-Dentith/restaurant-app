@@ -11,8 +11,11 @@ import React, { useEffect, useRef, useState } from "react";
 const CartPage = () => {
   const containerRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [deliveryCost, setDeliveryCost] = useState();
   const { data: session } = useSession();
   const router = useRouter(); 
+
+  const { products, totalItems, totalPrice, removeFromCart } = useCartStore(); 
 
   useEffect(() => {
     const container = containerRef.current;
@@ -21,7 +24,13 @@ const CartPage = () => {
     }
   }, []);
 
-  const { products, totalItems, totalPrice, removeFromCart } = useCartStore(); 
+  useEffect(() => {
+    if (totalPrice > 5000) {
+      setDeliveryCost("FREE")
+    } else {
+      setDeliveryCost(300)
+    }
+  }, [totalPrice])
 
   const handleCheckout = async () => {
     if (!session) {
@@ -63,16 +72,24 @@ const CartPage = () => {
             
           )}
           {products.map((item) => (
-            <div className="flex items-center justify-between mb-4" key={item.id + item.optionTitle}>
-              {item.image && (
-                <Image src={item.image} alt="" width={100} height={100} />
-              )}
-              <div>
-                <h1 className="uppercase text-xl font-bold">{item.title} x {item.quantity}</h1>
-                <span>{item.optionTitle}</span>
+            <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_50px_100px_25px] grid-cols-[100px_75px_20px_75px_25px] md:gap-8 gap-6 py-5 self-center" key={item.id + item.optionTitle}>
+              <div className="flex items-center">
+                <h1 className="uppercase md:text-xl font-bold">{item.title}</h1>
               </div>
-              <h2 className="font-bold">{formatPrice(item.price)}</h2>
-              <span className="cursor-pointer" onClick={() => {removeFromCart(item)}}>X</span>
+              <div className="flex items-center">
+                <span className="uppercase md:text-xl font-bold">{item.optionTitle}</span>
+              </div>
+              <div className="flex items-center">
+                <h1 className="uppercase md:text-xl font-bold">{item.quantity}</h1>
+              </div>
+              <div className="flex items-center">
+                <h2 className="md:text-xl font-bold">{formatPrice(item.price)}</h2>
+              </div >
+              <div className="flex items-center">
+                <button className="bg-red-400 p-1 rounded-full" onClick={() => removeFromCart(item)}>
+                  <Image src="/delete.png" alt="" width={20} height={20}/>
+                </button>
+              </div>
             </div>
           ))}
       </div>
@@ -88,12 +105,20 @@ const CartPage = () => {
         </div>
         <div className="flex justify-between">
           <span className="">Delivery Cost</span>
-          <span className="text-green-500">FREE</span>
+          {typeof deliveryCost === "number" ? (
+            <span className="text-green-500">{formatPrice(deliveryCost)}</span>
+          ) : (
+            <span className="text-green-500">{deliveryCost}</span>
+          )}
         </div>
         <hr className="my-2" />
         <div className="flex justify-between">
           <span className="font-bold">Total</span>
-          <span className="font-bold">{formatPrice(totalPrice)}</span>
+          {typeof deliveryCost === "number" ? (
+            <span className="font-bold">{formatPrice(totalPrice + deliveryCost)}</span>
+          ) : (
+            <span className="font-bold">{formatPrice(totalPrice)}</span>
+          )}
         </div>
         <button className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center" onClick={handleCheckout}>
           Checkout
