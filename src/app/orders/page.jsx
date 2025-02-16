@@ -119,8 +119,8 @@ const OrdersPage = () => {
                       className="flex flex-col items-center justify-center gap-2 px-1"
                       onSubmit={(e) => handleUpdate(e, item.id)}
                     >
-                      <select required className="bg-gray-50 border rounded-lg p-2">
-                        <option value="" selected="selected" disabled hidden>{item.status}</option>
+                      <select required defaultValue={item.status}className="bg-gray-50 border rounded-lg p-2">
+                        <option value={item.status} disabled hidden>{item.status}</option>
                         <option value="Being Prepared!">Being Prepared!</option>
                         <option value="On Its Way!">On Its Way!</option>
                         <option value="Order Complete!">Order Complete!</option>

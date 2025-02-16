@@ -132,6 +132,7 @@ const AddPage = () => {
             type="text"
             name="title"
             placeholder="Bella Napoli"
+            required
             onChange={handleChange}
           />
         </div>
@@ -141,6 +142,7 @@ const AddPage = () => {
             className="ring-1 ring-red-200 p-2 rounded-sm"
             name="description"
             placeholder="A timeless favourite with a twist, showcasing a thin crust topped with sweet tomato, fresh basil and creamy mozzarella."
+            required
             onChange={handleChange}
           ></textarea>
         </div>
@@ -151,17 +153,19 @@ const AddPage = () => {
             type="number"
             name="price"
             placeholder="1499"
+            required
             onChange={handleChange}
           />
         </div>
         <div className="w-full flex flex-col gap-2">
           <label>Category</label>
-          <select className="ring-1 ring-red-200 p-2 py-2.5 rounded-sm" name="catSlug" onChange={handleChange}>
+          <select defaultValue="" className="ring-1 ring-red-200 p-2 py-2.5 rounded-sm" name="catSlug" 
+          required onChange={handleChange}>
             <option value="" disabled hidden>
               Select a category...
             </option>
             {categories.map((category) => (
-              <option value={category.slug}>{category.title}</option>
+              <option value={category.slug} key={category.slug}>{category.title}</option>
             ))}
           </select>
         </div>
@@ -171,6 +175,7 @@ const AddPage = () => {
             className="ring-1 ring-red-200 p-2 rounded-sm"
             type="file"
             name="image"
+            required
             onChange={handleImageChange}
           />
         </div>
