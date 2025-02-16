@@ -156,13 +156,6 @@ const AddPage = () => {
         </div>
         <div className="w-full flex flex-col gap-2">
           <label>Category</label>
-          {/* <input
-            className="ring-1 ring-red-200 p-2 rounded-sm"
-            type="text"
-            name="catSlug"
-            placeholder="pizzas"
-            onChange={handleChange}
-          /> */}
           <select className="ring-1 ring-red-200 p-2 py-2.5 rounded-sm" name="catSlug" onChange={handleChange}>
             <option value="" disabled hidden>
               Select a category...
