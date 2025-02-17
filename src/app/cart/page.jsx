@@ -12,10 +12,17 @@ const CartPage = () => {
   const containerRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [deliveryCost, setDeliveryCost] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
   const router = useRouter(); 
 
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore(); 
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 250)
+  }, [])
 
   useEffect(() => {
     const container = containerRef.current;
@@ -64,14 +71,19 @@ const CartPage = () => {
       {/* PRODUCTS CONTAINER  */}
       <div ref={containerRef} className={`h-full min-[400px]:p-4 flex flex-col overflow-auto flex-grow lg:w-2/3 2xl:w-1/2 ${isOverflowing ? "" : "justify-center"}`}>
           {/* SINGLE ITEM */}
-          {products.length === 0 && (
+          {isLoading && (
+            <div className="flex flex-col gap-6">
+              <p className="text-xl text-center">Your cart items are loading...</p>
+            </div>
+          )}
+          {!isLoading && products.length === 0 && (
             <div className="flex flex-col gap-6">
               <p className="text-xl text-center">Unfortunately, your cart is empty. Click the button below to view our menu...</p>
-            <Link href="/menu" className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center text-center">Menu</Link>
+              <Link href="/menu" className="bg-red-500 text-white p-3 rounded-md w-1/2 self-center text-center">Menu</Link>
             </div>
             
           )}
-          {products.map((item) => (
+          {!isLoading && products.map((item) => (
             <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_50px_100px_25px] grid-cols-[minmax(100px,_150px)_75px_20px_75px_25px] md:gap-8 min-[400px]:gap-4 gap-1 py-5 self-center" key={item.id + item.optionTitle}>
               <div className="flex items-center">
                 <h1 className="uppercase md:text-xl font-bold">{item.title}</h1>
