@@ -8,6 +8,7 @@ export const Price = ({ product }) => {
   const [total, setTotal] = useState(product.price);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
+  const [buttonText, setButtonText] = useState("Add to Cart"); 
 
   const { addToCart } = useCartStore(); 
 
@@ -15,7 +16,9 @@ export const Price = ({ product }) => {
     setTotal(quantity * (product.options ? product.price + product.options[selected].additionalPrice : product.price))
   }, [quantity, selected])  
 
-  const handleAddToCart = (product) => {        
+  const handleAddToCart = (product) => {     
+    setButtonText("Adding...");
+
     addToCart({
       id: product.id,
       title: product.title,
@@ -26,6 +29,10 @@ export const Price = ({ product }) => {
       }),
       quantity: quantity,
     })
+
+    setTimeout(() => {
+      setButtonText("Added to Cart"); 
+    }, 1000);
   }
 
   return (
@@ -41,7 +48,10 @@ export const Price = ({ product }) => {
               background: selected === index ? "rgb(248 113 113)" : "white",
               color: selected === index ? "white" : "red",
             }}
-            onClick={() => setSelected(index)}
+            onClick={() => {
+              setSelected(index)
+              setButtonText("Add to Cart")
+            }}
           >
             {option.title}
           </button>
@@ -59,8 +69,8 @@ export const Price = ({ product }) => {
           </div>
         </div>
         {/* CART BUTTON */}
-        <button className="uppercase w-56 bg-red-500 text-white p-3 ring-1 ring-red-500" onClick={() => {handleAddToCart(product)}}>
-          Add to Cart
+        <button className="uppercase w-56 bg-red-500 text-white font-bold p-3 ring-1 ring-red-500" onClick={() => {handleAddToCart(product)}}>
+          {buttonText}
         </button>
       </div>
     </div>
