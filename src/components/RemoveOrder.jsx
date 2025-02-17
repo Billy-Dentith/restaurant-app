@@ -1,39 +1,22 @@
 "use client";
 
+import useOrders from "@/hooks/useOrders";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 
 const RemoveOrder = ({ id }) => {
-  const { data: session, status } = useSession();
+  const { deleteOrder } = useOrders(); 
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
-  if (status === "unauthenticated" || !session.is_admin) {
-    return;
-  }
-
-  const handleRemoval = async (id) => {
-    const result = confirm("Are you sure you want to delete this order?");
+  const handleDelete = () => {
+    const isConfirmed = confirm("Are you sure you want to delete this order?");
     
-    if (result) {
-      const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
-        method: "DELETE",
-      });
-  
-      if (response.status === 200) {
-          window.location.reload();
-        } else {
-          const data = await response.json();
-          console.log(data.message);
-        }
-      };
+    if (isConfirmed) {
+      deleteOrder.mutate(id)
     }
+  }
 
   return (
     <button
-      onClick={() => handleRemoval(id)}
+      onClick={handleDelete}
       className="bg-red-400 flex justify-self-center p-2 rounded-full"
     >
       <Image src="/delete.png" alt="remove order" width={20} height={20} />
