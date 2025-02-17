@@ -22,7 +22,7 @@ const CartPage = () => {
     if (container) {
       setIsOverflowing(container.scrollHeight > container.clientHeight);
     }
-  }, []);
+  }, [products]);
 
   useEffect(() => {
     if (totalPrice > 5000) {
@@ -72,7 +72,7 @@ const CartPage = () => {
             
           )}
           {products.map((item) => (
-            <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_50px_100px_25px] grid-cols-[100px_75px_20px_75px_25px] md:gap-8 gap-6 py-5 self-center" key={item.id + item.optionTitle}>
+            <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_50px_100px_25px] grid-cols-[minmax(100px,_150px)_75px_20px_75px_25px] md:gap-8 gap-4 py-5 self-center" key={item.id + item.optionTitle}>
               <div className="flex items-center">
                 <h1 className="uppercase md:text-xl font-bold">{item.title}</h1>
               </div>
