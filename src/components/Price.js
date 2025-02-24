@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 
 export const Price = ({ product }) => {
   const [total, setTotal] = useState(product.price);
+  const [optionPrice, setOptionPrice] = useState(product.price);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
   const [buttonText, setButtonText] = useState("Add to Cart"); 
@@ -14,6 +15,7 @@ export const Price = ({ product }) => {
 
   useEffect(() => {
     setTotal(quantity * (product.options ? product.price + product.options[selected].additionalPrice : product.price))
+    setOptionPrice(product.options ? product.price + product.options[selected].additionalPrice : product.price)
   }, [quantity, selected])  
 
   const handleAddToCart = (product) => {     
@@ -23,7 +25,8 @@ export const Price = ({ product }) => {
       id: product.id,
       title: product.title,
       img: product.img,
-      price: total,
+      price: optionPrice,
+      itemSubtotal: total,
       ...(product.options.length && {
         optionTitle: product.options[selected].title,
       }),
