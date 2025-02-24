@@ -11,6 +11,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const PayPage = ({ params }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [currentOrder, setCurrentOrder] = useState({}); 
+  const [isLoading, setIsLoading] = useState(true); 
 
   const { id } = params;    
 
@@ -47,6 +48,10 @@ const PayPage = ({ params }) => {
     makeRequest();
     fetchOrder(); 
 
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500)
+
   }, [id]);
 
   const options = {
@@ -56,6 +61,12 @@ const PayPage = ({ params }) => {
     },
   };
   
+  if (isLoading) return (
+    <div className="p-4 h-screen flex justify-around items-center">
+      <p className="text-xl text-center text-red-500">Loading...</p>
+    </div>
+  )
+
   return (
     <div className="mx-auto w-11/12 m-5 md:m-10">
       <div className="content-center flex flex-col md:flex-row">
