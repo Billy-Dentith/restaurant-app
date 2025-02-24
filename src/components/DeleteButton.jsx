@@ -11,15 +11,19 @@ const DeleteButton = ({ id }) => {
   }  
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-      method: "DELETE"
-    })
-
-    if (res.status === 200) {
-      window.location.href = "/menu";
-    } else {
-      const data = await res.json();
-      console.log(data.message);
+    try {
+      const res = await fetch(`http://localhost:3000/api/products/${id}`, {
+        method: "DELETE"
+      })
+  
+      if (res.status === 200) {
+        window.location.href = "/menu";
+      } else {
+        const data = await res.json();
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
