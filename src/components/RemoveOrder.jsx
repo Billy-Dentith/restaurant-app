@@ -19,7 +19,7 @@ const RemoveOrder = ({ id }) => {
       onClick={handleDelete}
       className="bg-red-400 flex justify-self-center p-2 rounded-full"
     >
-      <Image src="/delete.png" alt="remove order" width={20} height={20} />
+      <Image src="/delete.png" alt="remove order" width={15} height={15} />
     </button>
   );
 };
