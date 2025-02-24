@@ -99,24 +99,28 @@ const CartPage = () => {
             
           )}
           {!isLoading && products.map((item) => (
-            <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_50px_100px_25px] grid-cols-[minmax(100px,_150px)_75px_20px_75px_25px] md:gap-8 min-[400px]:gap-4 gap-1 py-5 self-center" key={item.id + item.optionTitle}>
+            <div className="grid md:grid-cols-[minmax(100px,_250px)_175px_60px_100px_25px] grid-cols-[minmax(100px,_150px)_75px_20px_75px_25px] md:gap-8 min-[400px]:gap-4 gap-1 py-5 self-center" key={item.id + item.optionTitle}>
               <div className="flex items-center">
                 <h1 className="uppercase md:text-xl font-bold">{item.title}</h1>
               </div>
               <div className="flex items-center">
                 <span className="uppercase md:text-xl font-bold">{item.optionTitle}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <button onClick={() => handleReduceQuantity(item)}>-</button>
+              <div className="flex flex-col items-center gap-1">
+                <button className="bg-red-400 p-1 rounded-full" onClick={() => increaseQuantity(item)}>
+                  <Image src="/plus.png" alt="increase item quantity" width={10} height={10} />
+                </button>
                 <h1 className="uppercase md:text-xl font-bold">{item.quantity}</h1>
-                <button onClick={() => increaseQuantity(item)}>+</button>
+                <button className="bg-red-400 p-1 rounded-full" onClick={() => handleReduceQuantity(item)}>
+                  <Image src="/minus.png" alt="reduce item quantity" width={10} height={10} />
+                </button>
               </div>
               <div className="flex items-center">
                 <h2 className="md:text-xl font-bold">{formatPrice(item.itemSubtotal)}</h2>
               </div >
               <div className="flex items-center">
                 <button className="bg-red-400 p-1 rounded-full" onClick={() => removeFromCart(item)}>
-                  <Image src="/delete.png" alt="" width={20} height={20}/>
+                  <Image src="/delete.png" alt="delete item" width={20} height={20}/>
                 </button>
               </div>
             </div>
