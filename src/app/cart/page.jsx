@@ -16,7 +16,7 @@ const CartPage = () => {
   const { data: session } = useSession();
   const router = useRouter(); 
 
-  const { products, totalItems, totalPrice, removeFromCart } = useCartStore(); 
+  const { products, totalItems, totalPrice, removeFromCart, reduceQuantity, increaseQuantity, removeAllFromCart } = useCartStore(); 
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,6 +38,14 @@ const CartPage = () => {
       setDeliveryCost(300)
     }
   }, [totalPrice])
+
+  const handleReduceQuantity = (item) => {
+    if (item.quantity === 1) {
+      removeFromCart(item);
+    } else {
+      reduceQuantity(item);
+    }
+  }
 
   const handleCheckout = async () => {
     if (!session) {
@@ -68,6 +76,13 @@ const CartPage = () => {
 
   return (
     <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-red-500 lg:flex-row">
+      {!isLoading && products.length !== 0 && (
+        <div className="flex justify-center m-2">
+          <button className="uppercase md:text-l font-bold" onClick={() => removeAllFromCart()}>
+            Empty Cart
+          </button>
+        </div>
+      )}
       {/* PRODUCTS CONTAINER  */}
       <div ref={containerRef} className={`h-full min-[400px]:p-4 flex flex-col overflow-auto flex-grow lg:w-2/3 2xl:w-1/2 ${isOverflowing ? "" : "justify-center"}`}>
           {/* SINGLE ITEM */}
@@ -91,11 +106,13 @@ const CartPage = () => {
               <div className="flex items-center">
                 <span className="uppercase md:text-xl font-bold">{item.optionTitle}</span>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
+                <button onClick={() => handleReduceQuantity(item)}>-</button>
                 <h1 className="uppercase md:text-xl font-bold">{item.quantity}</h1>
+                <button onClick={() => increaseQuantity(item)}>+</button>
               </div>
               <div className="flex items-center">
-                <h2 className="md:text-xl font-bold">{formatPrice(item.price)}</h2>
+                <h2 className="md:text-xl font-bold">{formatPrice(item.itemSubtotal)}</h2>
               </div >
               <div className="flex items-center">
                 <button className="bg-red-400 p-1 rounded-full" onClick={() => removeFromCart(item)}>

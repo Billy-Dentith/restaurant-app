@@ -11,6 +11,7 @@ export const useCartStore = create(persist((set, get) => ({
     products: INITIAL_STATE.products,
     totalItems: INITIAL_STATE.totalItems,
     totalPrice: INITIAL_STATE.totalPrice,
+
     addToCart(item) {
         const products = get().products 
         
@@ -24,7 +25,7 @@ export const useCartStore = create(persist((set, get) => ({
                 ? {
                     ...product,
                     quantity: product.quantity + item.quantity,
-                    price: product.price + item.price,
+                    itemSubtotal: product.itemSubtotal + item.price,
                 } 
                 : product
             );
@@ -37,9 +38,52 @@ export const useCartStore = create(persist((set, get) => ({
             set((state) => ({
                 products: [...state.products, item], 
                 totalItems: state.totalItems + item.quantity, 
-                totalPrice: state.totalPrice + item.price
+                totalPrice: state.totalPrice + item.itemSubtotal
             }))
         }
+    },
+
+    increaseQuantity(item) {
+        const products = get().products  
+
+        console.log("item ", item);
+        
+                   
+        const updatedProducts = products.map((product) => 
+            product.id === item.id && product.optionTitle === item.optionTitle
+            ? {
+                ...product,
+                quantity: product.quantity + 1,
+                itemSubtotal: product.itemSubtotal + item.price,
+            } 
+            : product
+        );
+
+        set((state) => ({
+            products: updatedProducts,
+            totalItems: state.totalItems + 1, 
+            totalPrice: state.totalPrice + item.price
+        }))
+    },
+
+    reduceQuantity(item) {
+        const products = get().products 
+                      
+        const updatedProducts = products.map((product) => 
+            product.id === item.id && product.optionTitle === item.optionTitle
+            ? {
+                ...product,
+                quantity: product.quantity - 1,
+                itemSubtotal: product.itemSubtotal - item.price,
+            } 
+            : product
+        );
+        
+        set((state) => ({
+            products: updatedProducts,
+            totalItems: state.totalItems - 1, 
+            totalPrice: state.totalPrice - item.price
+        }))
     },
 
     removeFromCart(item) {
