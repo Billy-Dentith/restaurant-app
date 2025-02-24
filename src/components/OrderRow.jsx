@@ -16,8 +16,8 @@ const OrderRow = ({ order, session, handleUpdate }) => {
       }`}
       key={order.id}
     >
-      <td className="hidden md:table-cell py-4 px-2">{order.id}</td>
-      <td className="w-16 lg:w-24 py-4 px-2">
+      <td className="py-4 px-2">{order.id}</td>
+      <td className="py-4 px-2">
         {time}
         <br />
         {`${day}/${month}`}
@@ -25,13 +25,13 @@ const OrderRow = ({ order, session, handleUpdate }) => {
         {year}
       </td>
       <td className="py-4 px-2">{formatPrice(order.price)}</td>
-      <td className="hidden md:table-cell py-4 px-2">
+      <td className="py-4 px-2">
         <OrderProducts products={order.products} />
       </td>
       {session.is_admin ? (
         <td>
           <form
-            className="flex flex-col orders-center justify-center gap-2 px-1"
+            className="flex flex-col orders-center justify-center gap-2 p-1"
             onSubmit={(e) => handleUpdate(e, order.id)}
           >
             <select
@@ -47,7 +47,7 @@ const OrderRow = ({ order, session, handleUpdate }) => {
               <option value="Order Complete!">Order Complete!</option>
               <option value="Order Cancelled!">Order Cancelled!</option>
             </select>
-            <button className="bg-red-400 p-2 flex flex-row rounded-full">
+            <button className="bg-red-400 p-2 flex flex-row rounded-full items-center justify-center font-semibold">
               <Image
                 src="/edit.png"
                 alt="edit order"

@@ -30,14 +30,14 @@ const OrdersPage = () => {
   )
 
   return (
-    <div className="pt-4 p-2 lg:px-10 xl:px-40">
-      <table className="w-full border-separate border-spacing-2 text-xs sm:text-base">
+    <div className="overflow-x-scroll md:overflow-auto pt-4 p-2 lg:px-10 xl:px-40">
+      <table className="w-max md:w-full border-separate border-spacing-2 text-xs sm:text-base">
         <thead>
           <tr className="text-left">
-            <th className="hidden md:block">ID</th>
+            <th>ID</th>
             <th>Date</th>
             <th>Price</th>
-            <th className="hidden md:block">Products</th>
+            <th>Products</th>
             <th>Status</th>
           </tr>
         </thead>
