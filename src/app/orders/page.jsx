@@ -23,7 +23,11 @@ const OrdersPage = () => {
     updateOrder.mutate({ id, status });
   };
 
-  if (isLoading || status === "loading") return "Loading...";
+  if (isLoading || status === "loading") return (
+    <div className="p-4 h-screen flex justify-around items-center">
+      <p className="text-xl text-center text-red-500">Loading...</p>
+    </div>
+  )
 
   return (
     <div className="pt-4 p-2 lg:px-10 xl:px-40">

@@ -34,7 +34,11 @@ const SingleProduct = ({ params }) => {
     fetchProduct(); 
   }, [id])
 
-  if (!productData) return <p>Loading...</p>
+  if (!productData) return (
+    <div className="p-4 h-screen flex justify-around items-center">
+      <p className="text-xl text-center text-red-500">Loading...</p>
+    </div>
+  )
 
   return (
     <div className="p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-red-500 md:flex-row md:gap-8 md:items-center relative">
