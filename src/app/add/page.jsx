@@ -71,6 +71,14 @@ const AddPage = () => {
     });   
   };
 
+  const handleAddOptions = () => {
+    setOptions((prev) => [...prev, option]);
+    setOption({
+      title: "",
+      additionalPrice: 0,
+    })
+  }
+
   const handleImageChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -187,6 +195,7 @@ const AddPage = () => {
               type="text"
               placeholder="Title"
               name="title"
+              value={option.title}
               onChange={handleOptionChange}
             />
             <input
@@ -194,12 +203,13 @@ const AddPage = () => {
               type="number"
               placeholder="Additional Price (In pence)"
               name="additionalPrice"
+              value={option.additionalPrice}
               onChange={handleOptionChange}
             />
             <button
               type="button"
               className="w-52 bg-red-500 text-white p-2"
-              onClick={() => setOptions((prev) => [...prev, option])}
+              onClick={handleAddOptions}
             >
               Add Options
             </button>
