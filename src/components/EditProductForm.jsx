@@ -9,6 +9,11 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
     price: product.price,
   });
   const [file, setFile] = useState();
+  const [option, setOption] = useState({
+      title: "",
+      additionalPrice: "",
+    });
+  const [options, setOptions] = useState([]);
   const [isFeatured, setIsFeatured] = useState(product.is_featured);
 
   const handleChange = (e) => {
@@ -24,6 +29,8 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
   };
 
   const uploadImage = async () => {
+    if (!file) return; 
+
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "restaurant");
@@ -40,18 +47,37 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
     return responseData.url;
   };
 
+  const handleOptionChange = (e) => {    
+    const { name, value } = e.target;
+
+    setOption((prev) => {
+      return { ...prev, [name]: name === "additionalPrice" ? Number(value) : value };
+    });   
+  };
+
+  const handleAddOptions = () => {
+    setOptions((prev) => [...prev, { ...option}]);
+    setOption({
+      title: "",
+      additionalPrice: "",
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const body = {
         ...inputs,
+        options,
         is_featured: isFeatured,
       };
 
       if (file) {
         const url = await uploadImage();
-        body.image = url;
+        if (url) {
+          body.image = url;
+        }
       }
 
       const response = await fetch(`http://localhost:3000/api/products/${id}`, {
@@ -78,7 +104,7 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
 
   return (
     <div>
-      <form className="flex flex-wrap gap-6 p-4 mt-4" onSubmit={handleSubmit}>
+      <form className="flex flex-wrap gap-6 p-4 mt-4 text-black" onSubmit={handleSubmit}>
         <h1 className="text-4xl mb-2 font-bold">Edit Product</h1>
         <div className="w-full flex flex-col gap-2">
           <label>Title</label>
@@ -119,13 +145,58 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
           />
         </div>
         <div className="w-full flex flex-col gap-2">
+          <label>Options</label>
+          <div className="flex flex-col gap-2">
+            <input
+              className="ring-1 ring-red-200 p-2 rounded-sm"
+              type="text"
+              placeholder="Title"
+              name="title"
+              value={option.title}
+              onChange={handleOptionChange}
+            />
+            <input
+              className="ring-1 ring-red-200 p-2 rounded-sm"
+              type="number"
+              placeholder="Additional Price (In pence)"
+              name="additionalPrice"
+              value={option.additionalPrice}
+              onChange={handleOptionChange}
+            />
+            <button
+              type="button"
+              className="w-52 bg-red-500 text-white p-2"
+              onClick={handleAddOptions}
+            >
+              Add Options
+            </button>
+          </div>
+          <div>
+            {options.map((option) => (
+              <div
+                key={option.title}
+                className="ring-1 ring-red-500 p-2 rounded-md cursor-pointer"
+                onClick={() =>
+                  setOptions(
+                    options.filter((item) => item.title !== option.title)
+                  )
+                }
+              >
+                <span>{option.title} </span>
+                <span>(+ £{option.additionalPrice / 100})</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-2">
           <label>Featured Product</label>
           <div className="flex gap-3">
             <button
               type="button"
               className={`w-full  ${
                 isFeatured ? "bg-red-500" : "bg-gray-300"
-              } ${isFeatured ? "disabled" : ""} text-white p-2`}
+              } text-white p-2`}
+              disabled={isFeatured}
               onClick={() => setIsFeatured(true)}
             >
               Yes
@@ -134,7 +205,8 @@ const EditProductForm = ({ id, product, setIsEditing, setProductData }) => {
               type="button"
               className={`w-full  ${
                 !isFeatured ? "bg-red-500" : "bg-gray-300"
-              } ${isFeatured ? "disabled" : ""} text-white p-2`}
+              } text-white p-2`}
+              disabled={!isFeatured}
               onClick={() => setIsFeatured(false)}
             >
               No
