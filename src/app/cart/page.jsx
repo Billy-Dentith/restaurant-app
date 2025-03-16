@@ -75,7 +75,7 @@ const CartPage = () => {
   }  
 
   return (
-    <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-red-500 lg:flex-row">
+    <div className="h-[calc(100vh-6rem)] flex flex-col text-red-500 lg:flex-row">
       {!isLoading && products.length !== 0 && (
         <div className="flex justify-center m-2">
           <button className="uppercase md:text-l font-bold" onClick={() => removeAllFromCart()}>
