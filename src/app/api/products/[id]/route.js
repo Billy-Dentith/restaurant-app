@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../../auth/[...nextauth]/route";
+import baseUrl from "../..";
 
 // FETCH SINGLE PRODUCT BY ID
 export const GET = async (req, { params }) => {
@@ -13,7 +14,7 @@ export const GET = async (req, { params }) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:9090/api/products/${id}`, {
+    const response = await fetch(`${baseUrl}/products/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +56,7 @@ export const DELETE = async (req, { params }) => {
   if (session.is_admin) {
     try {
       
-      const response = await fetch(`http://localhost:9090/api/products/${id}`, {
+      const response = await fetch(`${baseUrl}/products/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +104,7 @@ export const PATCH = async (req, { params }) => {
 
   if (session.is_admin) {
     try {
-      const response = await fetch(`http://localhost:9090/api/products/${id}`, {
+      const response = await fetch(`${baseUrl}/products/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
