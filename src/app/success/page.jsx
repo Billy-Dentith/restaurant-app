@@ -3,7 +3,7 @@
 import { Slider } from "@/components/Slider";
 import { useCartStore } from "@/utils/store";
 import { useRouter, useSearchParams } from "next/navigation"
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 
 const SuccessContent = () => {
   const searchParams = useSearchParams(); 
@@ -37,7 +37,7 @@ const SuccessContent = () => {
       makeRequest(); 
     }
 
-  }, [payment_intent, router])
+  }, [payment_intent, router, removeAllFromCart])
 
   return (
     <div className="flex flex-col content-center border-2 border-red-500 rounded-xl m-5 md:m-10 md:mx-auto p-5 md:p-10 w-11/12 md:w-8/12">
