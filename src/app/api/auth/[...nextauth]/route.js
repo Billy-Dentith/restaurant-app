@@ -8,6 +8,8 @@ const pool = new Pool({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 5432,
+    ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : false,
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
