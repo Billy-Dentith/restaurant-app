@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../../auth/[...nextauth]/route";
+import baseUrl from "../..";
 
 // PATCH ORDER
 export const PATCH = async (req, { params }) => {
@@ -9,7 +10,7 @@ export const PATCH = async (req, { params }) => {
     const { status } = body; 
 
     try {
-        const response = await fetch(`http://localhost:9090/api/orders/${id}`, {
+        const response = await fetch(`${baseUrl}/orders/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -56,7 +57,7 @@ export const DELETE = async (req, { params }) => {
 
     if (session.is_admin) {
         try {
-            const response = await fetch(`http://localhost:9090/api/orders/${id}`, {
+            const response = await fetch(`${baseUrl}/orders/${id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
@@ -93,7 +94,7 @@ export const GET = async (req, { params }) => {
     const { id } = params; 
 
     try {
-        const response = await fetch(`http://localhost:9090/api/orders/${id}`, {
+        const response = await fetch(`${baseUrl}/orders/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

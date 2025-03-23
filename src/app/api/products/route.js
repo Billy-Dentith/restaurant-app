@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import baseUrl from "..";
 
 // FETCH ALL PRODUCTS
 export const GET = async (req) => {
@@ -15,7 +16,7 @@ export const GET = async (req) => {
     }
 
     if (category) {
-      const response = await fetch(`http://localhost:9090/api/products?category=${category}`, {
+      const response = await fetch(`${baseUrl}/products?category=${category}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export const GET = async (req) => {
       });
       return response; 
     } else if (isFeatured) {
-      const response = await fetch(`http://localhost:9090/api/products?isFeatured=true`, {
+      const response = await fetch(`${baseUrl}/products?isFeatured=true`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export const POST = async (req) => {
     console.log("body in route: ", body);
     
 
-    const response = await fetch(`http://localhost:9090/api/products`, {
+    const response = await fetch(`${baseUrl}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

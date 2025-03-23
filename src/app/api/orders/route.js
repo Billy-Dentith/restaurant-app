@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../auth/[...nextauth]/route";
+import baseUrl from "..";
 
 // FETCH ALL ORDERS
 export const GET = async () => {
@@ -13,7 +14,7 @@ export const GET = async () => {
       );
     }
 
-    let url = "http://localhost:9090/api/orders";
+    let url = `${baseUrl}/orders`;
 
     if (!session.is_admin) {
       url += `?userEmail=${encodeURIComponent(session.user.email)}`;
@@ -52,7 +53,7 @@ export const POST = async (req) => {
     try {
       const body = await req.json();           
 
-      const response = await fetch("http://localhost:9090/api/orders", {
+      const response = await fetch(`${baseUrl}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

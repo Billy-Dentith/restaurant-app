@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
+import baseUrl from "..";
 
 // FETCH ALL CATEGORIES 
 export const GET = async () => {
     try {
-        const response = await fetch('http://localhost:9090/api/categories', {
+        const response = await fetch(`${baseUrl}/categories`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
