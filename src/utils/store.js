@@ -100,7 +100,7 @@ export const useCartStore = create(persist((set, get) => ({
                 !(product.id === item.id && product.optionTitle === item.optionTitle)
             ),
             totalItems: state.totalItems - item.quantity, 
-            totalPrice: state.totalPrice - item.price,
+            totalPrice: state.totalPrice - (item.price * item.quantity),
         }));
     },
 
