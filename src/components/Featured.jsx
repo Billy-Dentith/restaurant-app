@@ -1,8 +1,10 @@
+"use client";
+
 import baseUrl from "@/utils/baseUrl";
 import { formatPrice } from "@/utils/formatPrice";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const getProducts = async () => {
   try {
@@ -25,8 +27,28 @@ const getProducts = async () => {
   }
 };
 
-export const Featured = async () => {
-  const products = await getProducts();
+export const Featured = () => {
+  const [products, setProducts] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const products = await getProducts();
+      setProducts(products);
+      setLoading(false);
+    };
+
+    fetchProducts(); 
+  }, []); 
+
+  if (loading) {
+    return (
+      <div className="p-4 h-[60vh] flex justify-around items-center">
+        <p className="text-xl text-center text-red-500">Loading...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="w-100vw overflow-x-scroll text-red-500">
