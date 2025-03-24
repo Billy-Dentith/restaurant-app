@@ -6,41 +6,32 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const getProducts = async () => {
-  try {
-    const response = await fetch(
-      `${baseUrl}/api/products?isFeatured=true`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch products");
-    }
-
-    const { products } = await response.json();
-    return products;
-  } catch (error) {
-    console.error("Failed to fetch products:", error.message);
-    throw error;
-  }
-};
-
 export const Featured = () => {
-  const [products, setProducts] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
-      const products = await getProducts();
-      setProducts(products);
-      setLoading(false);
+      try {
+        const response = await fetch(`${baseUrl}/api/products?isFeatured=true`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const { products } = await response.json();
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchProducts(); 
-  }, []); 
+    fetchProducts();
+  }, []);
 
   if (loading) {
     return (
