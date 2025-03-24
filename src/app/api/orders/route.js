@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../auth/[...nextauth]/route";
-import baseUrl from "..";
+import baseUrl from "../baseUrl";
 
 // FETCH ALL ORDERS
 export const GET = async () => {
@@ -51,7 +51,7 @@ export const POST = async (req) => {
 
   if (session) {
     try {
-      const body = await req.json();           
+      const body = await req.json();
 
       const response = await fetch(`${baseUrl}/orders`, {
         method: "POST",
@@ -70,7 +70,6 @@ export const POST = async (req) => {
 
       const order = await response.json();
       return new NextResponse(JSON.stringify(order), { status: 201 });
-
     } catch (err) {
       console.error("Create error:", err.message);
       return new NextResponse(

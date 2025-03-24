@@ -1,8 +1,9 @@
+import baseUrl from "@/utils/baseUrl";
 import CategoryContent from "./content";
 
 const getData = async (category) => {    
     try {
-        const response = await fetch(`http://localhost:3000/api/products?category=${category}`, {
+        const response = await fetch(`${baseUrl}/api/products?category=${category}`, {
             cache: "no-store",
         });
 

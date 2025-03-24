@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
-import baseUrl from "..";
+import baseUrl from "../baseUrl";
 
 // FETCH ALL PRODUCTS
 export const GET = async (req) => {
-  try {   
+  try {
     const url = new URL(req.url);
-    const category = url.searchParams.get('category');    
-    const isFeatured = url.searchParams.get('isFeatured'); 
+    const category = url.searchParams.get("category");
+    const isFeatured = url.searchParams.get("isFeatured");
 
     if (!category && !isFeatured) {
       return new NextResponse(
-        JSON.stringify({ message: 'Category is required' }),
+        JSON.stringify({ message: "Category is required" }),
         { status: 400 }
       );
     }
@@ -22,7 +22,7 @@ export const GET = async (req) => {
           "Content-Type": "application/json",
         },
       });
-      return response; 
+      return response;
     } else if (isFeatured) {
       const response = await fetch(`${baseUrl}/products?isFeatured=true`, {
         method: "GET",
@@ -30,11 +30,13 @@ export const GET = async (req) => {
           "Content-Type": "application/json",
         },
       });
-      return response; 
+      return response;
     }
 
     if (!response.ok) {
-      console.error(`Error: Failed to fetch products. Status: ${response.status}`);
+      console.error(
+        `Error: Failed to fetch products. Status: ${response.status}`
+      );
       throw new Error("Failed to fetch products");
     }
 
@@ -42,7 +44,7 @@ export const GET = async (req) => {
 
     return new NextResponse(JSON.stringify(products), { status: 200 });
   } catch (err) {
-    console.error('Fetch error:', err.message);
+    console.error("Fetch error:", err.message);
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong!" }),
       { status: 500 }
@@ -52,10 +54,9 @@ export const GET = async (req) => {
 
 // POST PRODUCT
 export const POST = async (req) => {
-  try {   
+  try {
     const body = await req.json();
     console.log("body in route: ", body);
-    
 
     const response = await fetch(`${baseUrl}/products`, {
       method: "POST",
@@ -71,11 +72,10 @@ export const POST = async (req) => {
     }
 
     const product = await response.json();
-    
-    return new NextResponse(JSON.stringify(product), { status: 201 });
 
+    return new NextResponse(JSON.stringify(product), { status: 201 });
   } catch (err) {
-    console.error('Post error:', err.message);
+    console.error("Post error:", err.message);
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong!" }),
       { status: 500 }

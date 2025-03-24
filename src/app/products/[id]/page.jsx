@@ -4,6 +4,7 @@ import DeleteButton from "@/components/DeleteButton";
 import EditButton from "@/components/EditButton";
 import EditProductForm from "@/components/EditProductForm";
 import { Price } from "@/components/Price";
+import baseUrl from "@/utils/baseUrl";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -15,7 +16,7 @@ const SingleProduct = ({ params }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+        const response = await fetch(`${baseUrl}/api/products/${id}`, {
             cache: "no-store",
         });
     
