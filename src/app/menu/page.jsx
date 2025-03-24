@@ -1,30 +1,36 @@
+"use client"
+
 import baseUrl from "@/utils/baseUrl";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const getData = async () => {
-  try {
-    const response = await fetch(`${baseUrl}/api/categories`, {
-      cache: "no-store",
-    });
-  
-    if (!response.ok) {
-      throw new Error("Failed to fetch categories");
-    }
-  
-    return await response.json();
-  } catch (error) {
-    console.error("Failed to fetch categories:", error.message);
-    throw error;
-  }
-};
+const MenuPage = () => {
+  const [categories, setCategories] = useState([]);
 
-const MenuPage = async () => {
-  const data = await getData();
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/categories`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
+        const data = await response.json();
+        setCategories(data.categories);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error.message);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <div className="p-4 lg:px-20 xl:px-40 h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col md:flex-row items-center">
-      {data.categories.map((category) => (
+      {categories.map((category) => (
         <Link
           href={`/menu/${category.slug}`}
           key={category.id}

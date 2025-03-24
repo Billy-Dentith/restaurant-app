@@ -1,3 +1,4 @@
+import baseUrl from "@/utils/baseUrl";
 import { formatPrice } from "@/utils/formatPrice";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +7,7 @@ import React from "react";
 const getProducts = async () => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/products?isFeatured=true`,
+      `${baseUrl}/api/products?isFeatured=true`,
       {
         cache: "no-store",
       }
