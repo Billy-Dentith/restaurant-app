@@ -2,6 +2,7 @@
 
 import CheckoutForm from "@/components/CheckoutForm";
 import OrderSummary from "@/components/OrderSummary";
+import baseUrl from "@/utils/baseUrl";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
@@ -18,7 +19,7 @@ const PayPage = ({ params }) => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/create-intent/${id}`, {
+        const response = await fetch(`${baseUrl}/api/create-intent/${id}`, {
           method: "POST",
         })
         
@@ -32,7 +33,7 @@ const PayPage = ({ params }) => {
 
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
+        const response = await fetch(`${baseUrl}/api/orders/${id}`, {
           method: "GET",
         })
         

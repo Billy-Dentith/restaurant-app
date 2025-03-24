@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../../auth/[...nextauth]/route";
-import baseUrl from "../..";
+import baseUrl from "../../baseUrl";
 
 // FETCH SINGLE PRODUCT BY ID
 export const GET = async (req, { params }) => {
   const { id } = params;
-  
+
   if (!id) {
     return new NextResponse(
       JSON.stringify({ message: "Product is required " }),
@@ -55,14 +55,13 @@ export const DELETE = async (req, { params }) => {
 
   if (session.is_admin) {
     try {
-      
       const response = await fetch(`${baseUrl}/products/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      
+
       if (!response.ok) {
         console.error(
           `Error: Failed to delete product. Status: ${response.status}`
@@ -81,10 +80,9 @@ export const DELETE = async (req, { params }) => {
       );
     }
   }
-  return new NextResponse(
-    JSON.stringify({ message: "You are not allowed!" }),
-    { status: 403 }
-  );
+  return new NextResponse(JSON.stringify({ message: "You are not allowed!" }), {
+    status: 403,
+  });
 };
 
 // EDIT SINGLE PRODUCT BY ID
@@ -111,7 +109,7 @@ export const PATCH = async (req, { params }) => {
         },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         console.error(
           `Error: Failed to update product. Status: ${response.status}`
@@ -132,8 +130,7 @@ export const PATCH = async (req, { params }) => {
       );
     }
   }
-  return new NextResponse(
-    JSON.stringify({ message: "You are not allowed!" }),
-    { status: 403 }
-  );
+  return new NextResponse(JSON.stringify({ message: "You are not allowed!" }), {
+    status: 403,
+  });
 };

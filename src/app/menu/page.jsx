@@ -1,9 +1,10 @@
+import baseUrl from "@/utils/baseUrl";
 import Link from "next/link";
 import React from "react";
 
 const getData = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/categories", {
+    const response = await fetch(`${baseUrl}/api/categories`, {
       cache: "no-store",
     });
   

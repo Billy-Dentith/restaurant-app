@@ -1,6 +1,7 @@
 "use client"
 
 import { Slider } from "@/components/Slider";
+import baseUrl from "@/utils/baseUrl";
 import { useCartStore } from "@/utils/store";
 import { useRouter, useSearchParams } from "next/navigation"
 import React, { Suspense, useEffect } from "react";
@@ -16,7 +17,7 @@ const SuccessContent = () => {
     if (payment_intent) {
       const makeRequest = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/confirm/${payment_intent}`, {
+          const response = await fetch(`${baseUrl}/api/confirm/${payment_intent}`, {
             method: "PATCH",
           })
 

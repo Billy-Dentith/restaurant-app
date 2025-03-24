@@ -1,5 +1,6 @@
 "use client";
 
+import baseUrl from "@/utils/baseUrl";
 import { formatPrice } from "@/utils/formatPrice";
 import { useCartStore } from "@/utils/store";
 import { useSession } from "next-auth/react";
@@ -52,7 +53,7 @@ const CartPage = () => {
       router.push("/login");
     } else {
       try {
-        const response = await fetch("http://localhost:3000/api/orders", {
+        const response = await fetch(`${baseUrl}/api/orders`, {
           method: "POST",
           headers: {"Content-Type":"application/json"},
           body: JSON.stringify({
